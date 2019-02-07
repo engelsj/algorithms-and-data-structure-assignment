@@ -95,11 +95,21 @@
      * @return array sorted in ascending order
      *
      */
-    static double [] selectionSort (double a[]){
-
-         //todo: implement the sort
-
-    }//end selectionsort
+    static double [] selectionSort (double a[])
+    {
+    	double temp; // temp variable for swapping the value
+    	for(int i = 0; i < a.length - 1; i++) // iterate over the array
+    	{
+    		int minIndex= i; // find the smallest element in the array
+    		for(int j = i + 1; j < a.length; j++)
+    			if(a[j] < a[minIndex])
+    				minIndex = j;
+    		temp = a[minIndex]; // swap the smallest element with the first element 
+    		a[minIndex] = a[i];
+    		a[i] = temp;
+    	}
+        return a;
+    }
 
    
 
