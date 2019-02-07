@@ -17,10 +17,25 @@
      * @return array sorted in ascending order.
      *
      */
-    static double [] insertionSort (double a[]){
-
-        //todo: implement the sort
-    }//end insertionsort
+    static double [] insertionSort (double a[])
+    {
+    	int i = 1;
+    	int j = 0;
+    	double x = 0;
+    	while(i < a.length)
+    	{
+    		x = a[i];
+    		j = i - 1;
+    		while(j >= 0 && a[j] > x)
+    		{
+    			a[j + 1] = a[j];
+    			j = j - 1;
+    		}
+    		a[j + 1] = x;
+    		i = i + 1;
+    	}
+    	return a;
+    }
 
     /**
      * Sorts an array of doubles using Quick Sort.
