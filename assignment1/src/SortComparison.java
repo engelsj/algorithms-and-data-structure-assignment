@@ -1,3 +1,5 @@
+import java.util.Random;
+
 // -------------------------------------------------------------------------
 
 /**
@@ -44,11 +46,12 @@
      * @return array sorted in ascending order
      *
      */
-    static double [] quickSort (double a[]){
-	
-		 //todo: implement the sort
+    static double [] quickSort (double a[])
+    {
+    
 
-    }//end quicksort
+    }
+    
 
     /**
      * Sorts an array of doubles using Merge Sort.
@@ -65,11 +68,11 @@
      * @return after the method returns, the array must be in ascending sorted order.
      */
 
-    static double[] mergeSortIterative (double a[]) {
-
-		 //todo: implement the sort
+    static double[] mergeSortIterative (double a[]) 
+    {
+    	
 	
-    }//end mergesortIterative
+    }
     
     
     
@@ -80,12 +83,61 @@
      * @param a: An unsorted array of doubles.
      * @return after the method returns, the array must be in ascending sorted order.
      */
-    static double[] mergeSortRecursive (double a[]) {
-    	
+    static double[] mergeSortRecursive (double a[]) 
+    {
+    	if(a == null)
+			return null;
+		
+		if(a.length > 1)
+		{
+			int mid = a.length / 2;
+			
+			double[] left = new double[mid];
+			for(int i = 0; i < mid; i++)
+				left[i] = a[i];
+			
+			double[] right = new double[mid];
+			for(int i = mid; i < a.length; i++)
+				right[ - mid] = a[i];
+			
+			mergeSortRecursive(left);
+			mergeSortRecursive(right);
+			
+			int i = 0;
+			int j = 0;
+			int k = 0;
+			
+			while(i < left.length && j < right.length)
+			{
+				if(left[i] < right[j])
+				{
+					a[k] = left[i];
+					i++;
+				}
+				else
+				{
+					a[k] = right[j];
+					j++;
+				}
+			}
+			
+			while(i < left.length)
+			{
+				a[k] = left[i];
+				i++;
+				k++;
+			}
+			while(j < right.length)
+			{
+				a[k] = right[j];
+				j++;
+				k++;
+			}
+		}
+		return a;
 
-    	//todo: implement the sort
-	
-   }//end mergeSortRecursive
+    	
+	}
     	
     
     /**
