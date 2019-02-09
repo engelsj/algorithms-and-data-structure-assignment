@@ -1,4 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 // -------------------------------------------------------------------------
 
@@ -263,11 +267,110 @@ class SortComparison {
 
 	public static void main(String[] args) {
 
-		double[] randomArr = { 1, 3, 4, 5, 6, 1, 1, 3, 6, 5, 6, 7, 8, 8, 7, 5, 54, 4, 5, 6, 6};
+		double[] numbers10 = new double[10];
+		fillArray(numbers10, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers10.txt");
+		System.out.println("Testing numbers10 array");
+		runSortTests(numbers10);
 		
-		randomArr = insertionSort(randomArr);
-		
-		System.out.println(isSorted(randomArr));
-	}
+		double[] numbers100 = new double[100];
+		fillArray(numbers100, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers100.txt");
+		System.out.println("Testing numbers100 array");
+		runSortTests(numbers100);
 
+		
+		double[] numbers1000 = new double[1000];
+		fillArray(numbers1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers1000.txt");
+		System.out.println("Testing numbers1000 array");
+		runSortTests(numbers1000);
+
+		
+		double[] duplicate1000 = new double[1000];
+		fillArray(duplicate1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers1000Duplicates.txt");
+		System.out.println("Testing duplicate1000 array");
+		runSortTests(duplicate1000);
+
+		
+		double[] ordered1000 = new double[1000];
+		fillArray(ordered1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersNearlyOrdered1000.txt");
+		System.out.println("Testing ordered1000 array");
+		runSortTests(ordered1000);
+		
+		double[] reverse1000 = new double[1000];
+		fillArray(reverse1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersReverse1000.txt");
+		System.out.println("Testing reverse1000 array");
+		runSortTests(reverse1000);
+		
+		double[] sorted1000 = new double[1000];
+		fillArray(sorted1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersSorted1000.txt");
+		System.out.println("Testing sorted1000 array");
+		runSortTests(sorted1000);
+		
+	}
+	
+	public static void fillArray(double[] a, String fileName)
+
+	{
+		try
+		{
+			File fileInput = new File(fileName);
+			Scanner scanner = new Scanner(fileInput);
+			int indexCounter = 0;
+			while(scanner.hasNextLine())
+			{
+				a[indexCounter++] = scanner.nextDouble();
+			}
+			scanner.close();
+		}
+		catch(FileNotFoundException e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	
+	public static void runSortTests(double[] a)
+	{
+		runTest(a, "insertionSort");
+		runTest(a, "quickSort");
+		runTest(a, "mergeSortRecursive");
+		//runTest(numbers10, "mergeSortIterative");
+		runTest(a, "selectionSort");
+	}
+	public static void runTest(double[] a, String sortType)
+	{
+		double[] testArray = Arrays.copyOf(a, a.length);
+		long start = -1;    
+		long elapsedTime = -1;
+		if(sortType.equals("insertionSort"))
+		{
+			start = System.nanoTime();  
+			insertionSort(testArray);
+			elapsedTime = System.nanoTime() - start;
+		}
+		if(sortType.equals("quickSort"))
+		{
+			start = System.nanoTime();  
+			quickSort(testArray);
+			elapsedTime = System.nanoTime() - start;
+		}
+		if(sortType.equals("mergeSortRecursive"))
+		{
+			start = System.nanoTime();  
+			mergeSortRecursive(testArray);
+			elapsedTime = System.nanoTime() - start;
+		}
+		if(sortType.equals("mergeSortIterative"))
+		{
+			start = System.nanoTime();  
+			mergeSortIterative(testArray);
+			elapsedTime = System.nanoTime()- start;
+		}
+		if(sortType.equals("selectionSort"))
+		{
+			start = System.nanoTime();  
+			selectionSort(testArray);
+			elapsedTime = System.nanoTime() - start;
+		}
+		System.out.println("Elapsedtime for " + sortType + " " + elapsedTime);
+	}
 }// end class
