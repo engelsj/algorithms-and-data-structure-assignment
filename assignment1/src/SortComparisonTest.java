@@ -55,6 +55,22 @@ public class SortComparisonTest
     }
     
     @Test
+    public void quickSort()
+    {
+    	// testing with single element array
+    	assertEquals("Testing single element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {1.0})));
+    	// testing with sorted array 
+    	assertEquals("Testing sorted element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0})));
+    	// testing with reverse array 
+    	assertEquals("Testing reverse element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {6.0, 5.0, 4.0, 3.0, 2.0, 1.0})));
+    	// testing with random array 
+    	assertEquals("Testing random element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {6.0, 1.0, 3.0, 4.0, 5.0, 2.0})));
+    	// testing with repeated array 
+    	assertEquals("Testing repeated element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {6.0, 6.0, 6.0, 6.0, 6.0, 6.0})));
+    
+    }
+    
+    @Test
     public void mergeSortIterative()
     {
     	// testing with single element array
@@ -102,9 +118,22 @@ public class SortComparisonTest
     
     }
     
+    @Test
+    public void isSorted()
+    {
+    	// testing with single element array
+    	assertEquals("Testing single element Array isSorted", true, SortComparison.isSorted(new double[] {1.0}));
+    	// testing with sorted array 
+    	assertEquals("Testing sorted element Array isSorted", true, SortComparison.isSorted(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0}));
+    	// testing with reverse array 
+    	assertEquals("Testing reverse element Array isSorted", false, SortComparison.isSorted(new double[] {6.0, 5.0, 4.0, 3.0, 2.0, 1.0}));
+    	// testing with random array 
+    	assertEquals("Testing random element Array isSorted", false, SortComparison.isSorted(new double[] {6.0, 1.0, 3.0, 4.0, 5.0, 2.0}));
+    	// testing with repeated array 
+    	assertEquals("Testing repeated element Array isSorted", true, SortComparison.isSorted(new double[] {6.0, 6.0, 6.0, 6.0, 6.0, 6.0}));
+    }
+ 
     
-
-
     // TODO: add more tests here. Each line of code and each decision in Collinear.java should
     // be executed at least once from at least one test.
 
