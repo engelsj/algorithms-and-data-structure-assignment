@@ -263,7 +263,7 @@ class SortComparison {
 		return a;
 	}
 
-	private static boolean isSorted(double a[]) {
+	public static boolean isSorted(double a[]) {
 		return isSorted(a, 0, a.length - 1);
 	}
 

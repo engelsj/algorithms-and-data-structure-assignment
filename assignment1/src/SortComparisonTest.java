@@ -37,6 +37,22 @@ public class SortComparisonTest
     	assertEquals("Testing Empty Array mergeSortRecursive", null, SortComparison.mergeSortRecursive(null));
     	assertEquals("Testing Empty Array selectionSort", null, SortComparison.selectionSort(null));
     }
+    
+    @Test
+    public void insertionSort()
+    {
+    	// testing with single element array
+    	assertEquals("Testing single element Array insertionSort", true, SortComparison.isSorted(SortComparison.insertionSort(new double[] {1.0})));
+    	// testing with sorted array 
+    	assertEquals("Testing sorted element Array insertionSort", true, SortComparison.isSorted(SortComparison.insertionSort(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0})));
+    	// testing with reverse array 
+    	assertEquals("Testing reverse element Array insertionSort", true, SortComparison.isSorted(SortComparison.insertionSort(new double[] {6.0, 5.0, 4.0, 3.0, 2.0, 1.0})));
+    	// testing with random array 
+    	assertEquals("Testing random element Array insertionSort", true, SortComparison.isSorted(SortComparison.insertionSort(new double[] {6.0, 1.0, 3.0, 4.0, 5.0, 2.0})));
+    	// testing with repeated array 
+    	assertEquals("Testing repeated element Array insertionSort", true, SortComparison.isSorted(SortComparison.insertionSort(new double[] {6.0, 6.0, 6.0, 6.0, 6.0, 6.0})));
+    
+    }
 
 
     // TODO: add more tests here. Each line of code and each decision in Collinear.java should
