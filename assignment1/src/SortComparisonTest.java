@@ -55,18 +55,50 @@ public class SortComparisonTest
     }
     
     @Test
-    public void quickSort()
+    public void mergeSortIterative()
     {
     	// testing with single element array
-    	assertEquals("Testing single element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {1.0})));
+    	assertEquals("Testing single element Array mergeSortIterative", true, SortComparison.isSorted(SortComparison.mergeSortIterative(new double[] {1.0})));
     	// testing with sorted array 
-    	assertEquals("Testing sorted element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0})));
+    	assertEquals("Testing sorted element Array mergeSortIterative", true, SortComparison.isSorted(SortComparison.mergeSortIterative(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0})));
     	// testing with reverse array 
-    	assertEquals("Testing reverse element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {6.0, 5.0, 4.0, 3.0, 2.0, 1.0})));
+    	assertEquals("Testing reverse element Array mergeSortIterative", true, SortComparison.isSorted(SortComparison.mergeSortIterative(new double[] {6.0, 5.0, 4.0, 3.0, 2.0, 1.0})));
     	// testing with random array 
-    	assertEquals("Testing random element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {6.0, 1.0, 3.0, 4.0, 5.0, 2.0})));
+    	assertEquals("Testing random element Array mergeSortIterative", true, SortComparison.isSorted(SortComparison.mergeSortIterative(new double[] {6.0, 1.0, 3.0, 4.0, 5.0, 2.0})));
     	// testing with repeated array 
-    	assertEquals("Testing repeated element Array quickSort", true, SortComparison.isSorted(SortComparison.quickSort(new double[] {6.0, 6.0, 6.0, 6.0, 6.0, 6.0})));
+    	assertEquals("Testing repeated element Array mergeSortIterative", true, SortComparison.isSorted(SortComparison.mergeSortIterative(new double[] {6.0, 6.0, 6.0, 6.0, 6.0, 6.0})));
+    
+    }
+    
+    @Test
+    public void mergeSortRecursive()
+    {
+    	// testing with single element array
+    	assertEquals("Testing single element Array mergeSortRecursive", true, SortComparison.isSorted(SortComparison.mergeSortRecursive(new double[] {1.0})));
+    	// testing with sorted array 
+    	assertEquals("Testing sorted element Array mergeSortRecursive", true, SortComparison.isSorted(SortComparison.mergeSortRecursive(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0})));
+    	// testing with reverse array 
+    	assertEquals("Testing reverse element Array mergeSortRecursive", true, SortComparison.isSorted(SortComparison.mergeSortRecursive(new double[] {6.0, 5.0, 4.0, 3.0, 2.0, 1.0})));
+    	// testing with random array 
+    	assertEquals("Testing random element Array mergeSortRecursive", true, SortComparison.isSorted(SortComparison.mergeSortRecursive(new double[] {6.0, 1.0, 3.0, 4.0, 5.0, 2.0})));
+    	// testing with repeated array 
+    	assertEquals("Testing repeated element Array mergeSortRecursive", true, SortComparison.isSorted(SortComparison.mergeSortRecursive(new double[] {6.0, 6.0, 6.0, 6.0, 6.0, 6.0})));
+    
+    }
+    
+    @Test
+    public void selectionSort()
+    {
+    	// testing with single element array
+    	assertEquals("Testing single element Array selectionSort", true, SortComparison.isSorted(SortComparison.selectionSort(new double[] {1.0})));
+    	// testing with sorted array 
+    	assertEquals("Testing sorted element Array selectionSort", true, SortComparison.isSorted(SortComparison.selectionSort(new double[] {1.0, 2.0, 3.0, 4.0, 5.0, 6.0})));
+    	// testing with reverse array 
+    	assertEquals("Testing reverse element Array selectionSort", true, SortComparison.isSorted(SortComparison.selectionSort(new double[] {6.0, 5.0, 4.0, 3.0, 2.0, 1.0})));
+    	// testing with random array 
+    	assertEquals("Testing random element Array selectionSort", true, SortComparison.isSorted(SortComparison.selectionSort(new double[] {6.0, 1.0, 3.0, 4.0, 5.0, 2.0})));
+    	// testing with repeated array 
+    	assertEquals("Testing repeated element Array selectionSort", true, SortComparison.isSorted(SortComparison.selectionSort(new double[] {6.0, 6.0, 6.0, 6.0, 6.0, 6.0})));
     
     }
     

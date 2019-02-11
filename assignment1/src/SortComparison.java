@@ -123,11 +123,14 @@ class SortComparison {
 		int left_start;
 
 		for (curr_size = 1; curr_size <= a.length - 1; curr_size = 2 * curr_size)
-			for (left_start = 0; left_start < a.length - 1; left_start += 2 * curr_size) {
+		{
+			for (left_start = 0; left_start < a.length - 1; left_start += 2 * curr_size) 
+			{
 				int mid = left_start + curr_size - 1;
 				int right_end = Math.min(left_start + 2 * curr_size - 1, a.length - 1);
 				merge(a, left_start, mid, right_end);
 			}
+		}
 		return a;
 	}
 
@@ -135,10 +138,6 @@ class SortComparison {
 		int i, j, k;
 		int n1 = mid - left + 1;
 		int n2 = right - mid;
-		
-		System.out.println("mid " + mid );
-		System.out.println("right " + right);
-		System.out.println();
 		
 		double L[] = new double[n1];
 		double R[] = new double[n2];
@@ -151,7 +150,7 @@ class SortComparison {
 
 		i = 0;
 		j = 0;
-		k = 1;
+		k = left;
 
 		while (i < n1 && j < n2) {
 			if (L[i] <= R[j]) {
@@ -276,43 +275,6 @@ class SortComparison {
 
 	public static void main(String[] args) {
 
-		double[] numbers10 = new double[10];
-		fillArray(numbers10, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers10.txt");
-		System.out.println("Testing numbers10 array");
-		runSortTests(numbers10);
-		
-		double[] numbers100 = new double[100];
-		fillArray(numbers100, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers100.txt");
-		System.out.println("Testing numbers100 array");
-		runSortTests(numbers100);
-
-		
-		double[] numbers1000 = new double[1000];
-		fillArray(numbers1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers1000.txt");
-		System.out.println("Testing numbers1000 array");
-		runSortTests(numbers1000);
-
-		
-		double[] duplicate1000 = new double[1000];
-		fillArray(duplicate1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers1000Duplicates.txt");
-		System.out.println("Testing duplicate1000 array");
-		runSortTests(duplicate1000);
-
-		
-		double[] ordered1000 = new double[1000];
-		fillArray(ordered1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersNearlyOrdered1000.txt");
-		System.out.println("Testing ordered1000 array");
-		runSortTests(ordered1000);
-		
-		double[] reverse1000 = new double[1000];
-		fillArray(reverse1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersReverse1000.txt");
-		System.out.println("Testing reverse1000 array");
-		runSortTests(reverse1000);
-		
-		double[] sorted1000 = new double[1000];
-		fillArray(sorted1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersSorted1000.txt");
-		System.out.println("Testing sorted1000 array");
-		runSortTests(sorted1000);
 		
 	}
 	
