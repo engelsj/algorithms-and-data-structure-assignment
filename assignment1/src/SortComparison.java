@@ -25,7 +25,10 @@ class SortComparison {
 	 * @return array sorted in ascending order.
 	 *
 	 */
-	static double[] insertionSort(double a[]) {
+	static double[] insertionSort(double a[]) 
+	{
+		if(a == null)
+			return null;
 		int i = 1;
 		int j = 0;
 		double x = 0;
@@ -52,6 +55,8 @@ class SortComparison {
 	 *
 	 */
 	static double[] quickSort(double a[]) {
+		if(a == null)
+			return null;
 		quickSortRecursive(a, 0, a.length - 1);
 		return a;
 
@@ -112,8 +117,9 @@ class SortComparison {
 
 	// reference taken from https://www.geeksforgeeks.org/iterative-merge-sort/
 	static double[] mergeSortIterative(double a[]) {
+		if(a == null)
+			return null;
 		int curr_size;
-
 		int left_start;
 
 		for (curr_size = 1; curr_size <= a.length - 1; curr_size = 2 * curr_size)
@@ -238,7 +244,10 @@ class SortComparison {
 	 * @return array sorted in ascending order
 	 *
 	 */
-	static double[] selectionSort(double a[]) {
+	static double[] selectionSort(double a[]) 
+	{
+		if(a == null)
+			return null;
 		double temp; // temp variable for swapping the value
 		for (int i = 0; i < a.length - 1; i++) // iterate over the array
 		{
