@@ -117,6 +117,8 @@ class SortComparison {
 	// reference taken from https://www.geeksforgeeks.org/iterative-merge-sort/
 	static double[] mergeSortIterative(double a[]) 
 	{
+		if(a == null)
+			return null;
 		int low = 0;
         int high = a.length - 1;
  
@@ -129,7 +131,7 @@ class SortComparison {
             {
                 int from = i;
                 int mid = i + m - 1;
-                int to = Integer.min(i + 2 * m - 1, high);
+                int to = Math.min(i + 2 * m - 1, high);
  
                 merge(a, temp, from, mid, to);
             }
@@ -258,10 +260,6 @@ class SortComparison {
 			if (a[i] < a[i - 1])
 				return false;
 		return true;
-	}
-
-	public static void main(String[] args) {
-
 	}
 
 }
