@@ -1,5 +1,10 @@
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Scanner;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -146,42 +151,111 @@ public class SortComparisonTest
     public static void main(String[] args)
     {
     	double[] numbers10 = new double[10];
-    	SortComparison.fillArray(numbers10, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers10.txt");
+    	fillArray(numbers10, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers10.txt");
 		System.out.println("Testing numbers10 array");
-		SortComparison.runSortTests(numbers10);
+		runSortTests(numbers10);
 		
 		double[] numbers100 = new double[100];
-		SortComparison.fillArray(numbers100, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers100.txt");
+		fillArray(numbers100, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers100.txt");
 		System.out.println("Testing numbers100 array");
-		SortComparison.runSortTests(numbers100);
+		runSortTests(numbers100);
 
 		
 		double[] numbers1000 = new double[1000];
-		SortComparison.fillArray(numbers1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers1000.txt");
+		fillArray(numbers1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers1000.txt");
 		System.out.println("Testing numbers1000 array");
-		SortComparison.runSortTests(numbers1000);
+		runSortTests(numbers1000);
 
 		
 		double[] duplicate1000 = new double[1000];
-		SortComparison.fillArray(duplicate1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers1000Duplicates.txt");
+		fillArray(duplicate1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbers1000Duplicates.txt");
 		System.out.println("Testing duplicate1000 array");
-		SortComparison.runSortTests(duplicate1000);
+		runSortTests(duplicate1000);
 
 		
 		double[] ordered1000 = new double[1000];
-		SortComparison.fillArray(ordered1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersNearlyOrdered1000.txt");
+		fillArray(ordered1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersNearlyOrdered1000.txt");
 		System.out.println("Testing ordered1000 array");
-		SortComparison.runSortTests(ordered1000);
+		runSortTests(ordered1000);
 		
 		double[] reverse1000 = new double[1000];
-		SortComparison.fillArray(reverse1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersReverse1000.txt");
+		fillArray(reverse1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersReverse1000.txt");
 		System.out.println("Testing reverse1000 array");
-		SortComparison.runSortTests(reverse1000);
+		runSortTests(reverse1000);
 		
 		double[] sorted1000 = new double[1000];
-		SortComparison.fillArray(sorted1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersSorted1000.txt");
+		fillArray(sorted1000, "/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment1/bin/numbersSorted1000.txt");
 		System.out.println("Testing sorted1000 array");
-		SortComparison.runSortTests(sorted1000);    }
+		runSortTests(sorted1000);    
+	}
+    
+    public static void fillArray(double[] a, String fileName)
+	{
+		try
+		{
+			File fileInput = new File(fileName);
+			Scanner scanner = new Scanner(fileInput);
+			int indexCounter = 0;
+			while(scanner.hasNextLine())
+			{
+				
+				a[indexCounter++] = scanner.nextDouble();
+			}
+			scanner.close();
+		}
+		catch(FileNotFoundException e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+	
+	public static void runSortTests(double[] a)
+	{
+		runTest(a, "insertionSort");
+		runTest(a, "quickSort");
+		runTest(a, "mergeSortRecursive");
+		runTest(a, "mergeSortIterative");
+		runTest(a, "selectionSort");
+	}
+	
+	public static void runTest(double[] a, String sortType)
+	{
+		double[] testArray = Arrays.copyOf(a, a.length);
+		long start = -1;    
+		long elapsedTime = -1;
+		if(sortType.equals("insertionSort"))
+		{
+			start = System.currentTimeMillis();  
+			SortComparison.insertionSort(testArray);
+			elapsedTime = System.currentTimeMillis() - start;
+		}
+		if(sortType.equals("quickSort"))
+		{
+			start = System.currentTimeMillis();  
+			SortComparison.quickSort(testArray);
+			elapsedTime = System.currentTimeMillis() - start;
+		}
+		if(sortType.equals("mergeSortRecursive"))
+		{
+			start = System.currentTimeMillis();  
+			SortComparison.mergeSortRecursive(testArray);
+			elapsedTime = System.currentTimeMillis() - start;
+		}
+		if(sortType.equals("mergeSortIterative"))
+		{
+			start = System.currentTimeMillis();  
+			SortComparison.mergeSortIterative(testArray);
+			elapsedTime = System.currentTimeMillis()- start;
+		}
+		if(sortType.equals("selectionSort"))
+		{
+			start = System.currentTimeMillis();  
+			SortComparison.selectionSort(testArray);
+			elapsedTime = System.currentTimeMillis() - start;
+		}
+		System.out.println("Elapsedtime for " + sortType + " " + elapsedTime);
+	}
 
 }
 

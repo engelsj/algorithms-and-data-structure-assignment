@@ -25,9 +25,8 @@ class SortComparison {
 	 * @return array sorted in ascending order.
 	 *
 	 */
-	static double[] insertionSort(double a[]) 
-	{
-		if(a == null)
+	static double[] insertionSort(double a[]) {
+		if (a == null)
 			return null;
 		int i = 1;
 		int j = 0;
@@ -55,7 +54,7 @@ class SortComparison {
 	 *
 	 */
 	static double[] quickSort(double a[]) {
-		if(a == null)
+		if (a == null)
 			return null;
 		quickSortRecursive(a, 0, a.length - 1);
 		return a;
@@ -116,64 +115,53 @@ class SortComparison {
 	 */
 
 	// reference taken from https://www.geeksforgeeks.org/iterative-merge-sort/
-	static double[] mergeSortIterative(double a[]) {
-		if(a == null)
-			return null;
-		int curr_size;
-		int left_start;
+	static double[] mergeSortIterative(double a[]) 
+	{
+		int low = 0;
+        int high = a.length - 1;
+ 
+        double[] temp = Arrays.copyOf(a, a.length);
+ 
+        for (int m = 1; m <= high - low; m = 2*m)
+        {
 
-		for (curr_size = 1; curr_size <= a.length - 1; curr_size = 2 * curr_size)
-		{
-			for (left_start = 0; left_start < a.length - 1; left_start += 2 * curr_size) 
-			{
-				int mid = left_start + curr_size - 1;
-				int right_end = Math.min(left_start + 2 * curr_size - 1, a.length - 1);
-				merge(a, left_start, mid, right_end);
-			}
-		}
+            for (int i = low; i < high; i += 2*m)
+            {
+                int from = i;
+                int mid = i + m - 1;
+                int to = Integer.min(i + 2 * m - 1, high);
+ 
+                merge(a, temp, from, mid, to);
+            }
+        }
 		return a;
 	}
 
-	static void merge(double a[], int left, int mid, int right) {
-		int i, j, k;
-		int n1 = mid - left + 1;
-		int n2 = right - mid;
+	static void merge(double a[], double[] temp, int from, int mid, int to) 
+	{
+		int k = from, i = from, j = mid + 1;
+		 
+        // loop till there are elements in the left and right runs
+        while (i <= mid && j <= to) {
+            if (a[i] < a[j]) {
+                temp[k++] = a[i++];
+            } else {
+                temp[k++] = a[j++];
+            }
+        }
+ 
+        // Copy remaining elements
+        while (i <= mid && i < a.length) {
+            temp[k++] = a[i++];
+        }
+ 
+        // Don't need to copy second half
+ 
+        // copy back to the original array to reflect sorted order
+        for (i = from; i <= to; i++) {
+            a[i] = temp[i];
+        }
 		
-		double L[] = new double[n1];
-		double R[] = new double[n2];
-
-		for (i = 0; i < n1; i++)
-			L[i] = a[left + i];
-		
-		for (j = 0; j < n2; j++)
-			R[j] = a[mid + 1 + j];
-
-		i = 0;
-		j = 0;
-		k = left;
-
-		while (i < n1 && j < n2) {
-			if (L[i] <= R[j]) {
-				a[k] = L[i];
-				i++;
-			} else {
-				a[k] = R[j];
-				j++;
-			}
-			k++;
-		}
-
-		while (i < n1) {
-			a[k] = L[i];
-			i++;
-			k++;
-		}
-
-		while (j < n2) {
-			a[k] = R[j];
-			j++;
-			k++;
-		}
 	}
 
 	/**
@@ -243,9 +231,8 @@ class SortComparison {
 	 * @return array sorted in ascending order
 	 *
 	 */
-	static double[] selectionSort(double a[]) 
-	{
-		if(a == null)
+	static double[] selectionSort(double a[]) {
+		if (a == null)
 			return null;
 		double temp; // temp variable for swapping the value
 		for (int i = 0; i < a.length - 1; i++) // iterate over the array
@@ -275,73 +262,6 @@ class SortComparison {
 
 	public static void main(String[] args) {
 
-		
 	}
-	
-	public static void fillArray(double[] a, String fileName)
 
-	{
-		try
-		{
-			File fileInput = new File(fileName);
-			Scanner scanner = new Scanner(fileInput);
-			int indexCounter = 0;
-			while(scanner.hasNextLine())
-			{
-				a[indexCounter++] = scanner.nextDouble();
-			}
-			scanner.close();
-		}
-		catch(FileNotFoundException e)
-		{
-			System.out.println(e);
-		}
-	}
-	
-	
-	public static void runSortTests(double[] a)
-	{
-		runTest(a, "insertionSort");
-		runTest(a, "quickSort");
-		runTest(a, "mergeSortRecursive");
-		//runTest(numbers10, "mergeSortIterative");
-		runTest(a, "selectionSort");
-	}
-	public static void runTest(double[] a, String sortType)
-	{
-		double[] testArray = Arrays.copyOf(a, a.length);
-		long start = -1;    
-		long elapsedTime = -1;
-		if(sortType.equals("insertionSort"))
-		{
-			start = System.nanoTime();  
-			insertionSort(testArray);
-			elapsedTime = System.nanoTime() - start;
-		}
-		if(sortType.equals("quickSort"))
-		{
-			start = System.nanoTime();  
-			quickSort(testArray);
-			elapsedTime = System.nanoTime() - start;
-		}
-		if(sortType.equals("mergeSortRecursive"))
-		{
-			start = System.nanoTime();  
-			mergeSortRecursive(testArray);
-			elapsedTime = System.nanoTime() - start;
-		}
-		if(sortType.equals("mergeSortIterative"))
-		{
-			start = System.nanoTime();  
-			mergeSortIterative(testArray);
-			elapsedTime = System.nanoTime()- start;
-		}
-		if(sortType.equals("selectionSort"))
-		{
-			start = System.nanoTime();  
-			selectionSort(testArray);
-			elapsedTime = System.nanoTime() - start;
-		}
-		System.out.println("Elapsedtime for " + sortType + " " + elapsedTime);
-	}
-}// end class
+}
