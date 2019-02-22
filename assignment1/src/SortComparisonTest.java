@@ -9,6 +9,52 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+
+
+/*
+ * a. Which of the sorting algorithms does the order of input have an impact on? Why?
+ * 
+  Input has the largest impact on insertion sort, quicksort, and selection sort. Insertion sort saw an massive increase in time
+  when the input was reversed because each pass of the sort had to go to the end of the unsorted list. Quicksort
+  on the other had saw a large increase in time when the input was close to sorted, which is why some quicksorts
+  add insertion/selection sort when the input is small or nearly sorted. Selection sort has trouble with random arrays 
+  because it looks to fix the order of the array. Because the other algorithms dont care too much about the order of the input
+  they run on more of an average case.
+  
+   b. Which algorithm has the biggest difference between the best and worst performance, based
+	on the type of input, for the input of size 1000? Why?
+	
+	The largest difference between best and worst case performance was insertion sort between the sorted and reverse sorts.
+	Because the sorted only takes one pass of the array, so it runs in N time. However when insertion sort is met with a reversed
+	array it runs in n ^ 2 time.
+	
+	
+   c. Which algorithm has the best/worst scalability, i.e., the difference in performance time
+	based on the input size? Please consider only input files with random order for this answer.
+	
+	Insertion sort and selection sort has trouble with scalability has they both have a worst case runtime of n ^ 2
+	which is not scablable for larger inputs. MergeSort and quick sort have the best scalability has they run closer to their average
+	time as input increase. However, quicksort can be given specific inputs that can break down the run time n^2.
+	
+   d. Did you observe any difference between iterative and recursive implementations of merge
+	sort?
+	
+	Iterative merge sort seems to scale better as it is not recursive so there is less strain placed on the processor.
+	For larger inputs is predict that iterative merge sort will run better.
+	
+   e. Which algorithm is the fastest for each of the 7 input files? 
+   
+   10 random - Quicksort - 0.00997
+   100 random - Quicksort 0.04771
+   1000 random - Quicksort - 0.612428
+   1000 duplicate - Quicksort - 0.095607
+   1000 order - Mergesort Iterative - 0.137406
+   1000 reverse - Merge Iterative - 0.084129
+   1000 sorted - Insertion sort - 0.034158
+ */
+
+
+
 //-------------------------------------------------------------------------
 /**
  *  Test class for SortComparison.java
@@ -222,39 +268,39 @@ public class SortComparisonTest
 	public static void runTest(double[] a, String sortType)
 	{
 		double[] testArray = Arrays.copyOf(a, a.length);
-		long start = -1;    
-		long elapsedTime = -1;
+		long start = 0;    
+		long end = 0;
 		if(sortType.equals("insertionSort"))
 		{
-			start = System.currentTimeMillis();  
+			start = System.nanoTime(); 
 			SortComparison.insertionSort(testArray);
-			elapsedTime = System.currentTimeMillis() - start;
+			end = System.nanoTime();
 		}
 		if(sortType.equals("quickSort"))
 		{
-			start = System.currentTimeMillis();  
+			start = System.nanoTime();  
 			SortComparison.quickSort(testArray);
-			elapsedTime = System.currentTimeMillis() - start;
+			end = System.nanoTime();
 		}
 		if(sortType.equals("mergeSortRecursive"))
 		{
-			start = System.currentTimeMillis();  
+			start = System.nanoTime();  
 			SortComparison.mergeSortRecursive(testArray);
-			elapsedTime = System.currentTimeMillis() - start;
+			end = System.nanoTime();
 		}
 		if(sortType.equals("mergeSortIterative"))
 		{
-			start = System.currentTimeMillis();  
+			start = System.nanoTime(); 
 			SortComparison.mergeSortIterative(testArray);
-			elapsedTime = System.currentTimeMillis()- start;
+			end = System.nanoTime();
 		}
 		if(sortType.equals("selectionSort"))
 		{
-			start = System.currentTimeMillis();  
+			start = System.nanoTime(); 
 			SortComparison.selectionSort(testArray);
-			elapsedTime = System.currentTimeMillis() - start;
+			end = System.nanoTime();
 		}
-		System.out.println("Elapsedtime for " + sortType + " " + elapsedTime);
+		System.out.println("Elapsedtime for " + sortType + " " + (end - start) / (float) 1000000);
 	}
 
 }
