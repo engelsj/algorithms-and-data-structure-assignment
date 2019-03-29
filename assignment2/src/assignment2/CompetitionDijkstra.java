@@ -1,5 +1,8 @@
 package assignment2;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -24,55 +27,77 @@ import java.util.Set;
 
 public class CompetitionDijkstra {
 
-    /**
-     * @param filename: A filename containing the details of the city road network
-     * @param sA, sB, sC: speeds for 3 contestants
-    */
-    CompetitionDijkstra (String filename, int sA, int sB, int sC)
-    {
-    	
-    }
+	/**
+	 * @param filename:
+	 *            A filename containing the details of the city road network
+	 * @param sA,
+	 *            sB, sC: speeds for 3 contestants
+	 */
+	CompetitionDijkstra(String filename, int sA, int sB, int sC) {
+		File file = new File(
+				"/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment2/src/"
+						+ filename);
+		try {
+			BufferedReader fileReader = new BufferedReader(new FileReader(file));
+			int numberOfNodes = Integer.parseInt(fileReader.readLine());
+			int numberOfIntersections = Integer.parseInt(fileReader.readLine());
+			String[] currentLine;
+			Node[] nodeList = new Node[numberOfNodes];
+			for (int i = 0; i < nodeList.length; i++)
+				nodeList[i] = new Node(i);
+			for (int i = 0; i < numberOfIntersections; i++) 
+			{
+				currentLine = fileReader.readLine().split(" ");
+				nodeList[Integer.parseInt(currentLine[0])].addDestination(nodeList[Integer.parseInt(currentLine[1])],
+						Double.parseDouble(currentLine[2]));
+			}
+			Graph graph = new Graph();
+			for (int i = 0; i < nodeList.length; i++) {
+				graph.addNode(nodeList[i]);
+			}
+			fileReader.close();
 
 
-    /**
-    * @return int: minimum minutes that will pass before the three contestants can meet
-     */
-    public int timeRequiredforCompetition(){
+		} 
+		catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 
-        //TO DO
-        return -1;
-    }
-    
-    public class Graph
-    {
-    	private Set<Node> nodes = new HashSet<>();
-    	
-    	public void addNode(Node newNode)
-    	{
-    		nodes.add(newNode);
-    	}
-    }
-    
-    public class Node
-    {
-    	private String name;
-    	
-    	private LinkedList<Node> shortestPath = new LinkedList<>();
-    	
-    	private HashMap<Node, Integer> adgacentNodes = new HashMap<>();
-    	
-    	private Integer distance = Integer.MAX_VALUE;
-    	
-    	public void addDestination(Node destination, int distance)
-    	{
-    		adgacentNodes.put(destination, distance);
-    	}
-    	
-    	public Node(String name)
-    	{
-    		this.name = name;
-    	}
-    	
-    }
+	/**
+	 * @return int: minimum minutes that will pass before the three contestants
+	 *         can meet
+	 */
+	public int timeRequiredforCompetition() {
+
+		// TO DO
+		return -1;
+	}
+
+	public class Graph {
+		private Set<Node> nodes = new HashSet<>();
+
+		public void addNode(Node newNode) {
+			nodes.add(newNode);
+		}
+	}
+
+	public class Node {
+		private int index;
+
+		private LinkedList<Node> shortestPath = new LinkedList<>();
+
+		private HashMap<Node, Double> adgacentNodes = new HashMap<>();
+
+		private double distance = Integer.MAX_VALUE;
+
+		public void addDestination(Node destination, double distance) {
+			adgacentNodes.put(destination, distance);
+		}
+
+		public Node(int index) {
+			this.index = index;
+		}
+
+	}
 }
-

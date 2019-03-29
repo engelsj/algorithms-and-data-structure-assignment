@@ -9,7 +9,7 @@ public class CompetitionTests {
     @Test
     public void testDijkstraConstructor() {
 
-        //TODO
+    	CompetitionDijkstra testClass = new CompetitionDijkstra("tinyEWD.txt", 0 , 0, 0);
     }
 
     @Test
