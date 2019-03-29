@@ -1,4 +1,10 @@
 package assignment2;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
 /*
  * A Contest to Meet (ACM) is a reality TV contest that sets three contestants at three random
  * city intersections. In order to win, the three contestants need all to meet at any intersection
@@ -22,9 +28,9 @@ public class CompetitionDijkstra {
      * @param filename: A filename containing the details of the city road network
      * @param sA, sB, sC: speeds for 3 contestants
     */
-    CompetitionDijkstra (String filename, int sA, int sB, int sC){
-
-       //TODO
+    CompetitionDijkstra (String filename, int sA, int sB, int sC)
+    {
+    	
     }
 
 
@@ -36,5 +42,37 @@ public class CompetitionDijkstra {
         //TO DO
         return -1;
     }
-
+    
+    public class Graph
+    {
+    	private Set<Node> nodes = new HashSet<>();
+    	
+    	public void addNode(Node newNode)
+    	{
+    		nodes.add(newNode);
+    	}
+    }
+    
+    public class Node
+    {
+    	private String name;
+    	
+    	private LinkedList<Node> shortestPath = new LinkedList<>();
+    	
+    	private HashMap<Node, Integer> adgacentNodes = new HashMap<>();
+    	
+    	private Integer distance = Integer.MAX_VALUE;
+    	
+    	public void addDestination(Node destination, int distance)
+    	{
+    		adgacentNodes.put(destination, distance);
+    	}
+    	
+    	public Node(String name)
+    	{
+    		this.name = name;
+    	}
+    	
+    }
 }
+
