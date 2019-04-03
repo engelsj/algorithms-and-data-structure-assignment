@@ -3,10 +3,13 @@ package assignment2;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /*
  * A Contest to Meet (ACM) is a reality TV contest that sets three contestants at three random
@@ -26,6 +29,9 @@ import java.util.Set;
  */
 
 public class CompetitionDijkstra {
+	Graph searchGraph;
+	Node[] nodeList;
+	int longestTime;
 
 	/**
 	 * @param filename:
@@ -38,28 +44,37 @@ public class CompetitionDijkstra {
 				"/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment2/src/"
 						+ filename);
 		try {
+			// making file reader
 			BufferedReader fileReader = new BufferedReader(new FileReader(file));
+
+			// get the number of nodes and number of intersections from file
 			int numberOfNodes = Integer.parseInt(fileReader.readLine());
 			int numberOfIntersections = Integer.parseInt(fileReader.readLine());
+
+			// string to read currentLine
 			String[] currentLine;
-			Node[] nodeList = new Node[numberOfNodes];
+
+			// nodeList of to look at and load them
+			nodeList = new Node[numberOfNodes];
 			for (int i = 0; i < nodeList.length; i++)
 				nodeList[i] = new Node(i);
-			for (int i = 0; i < numberOfIntersections; i++) 
-			{
-				currentLine = fileReader.readLine().split(" ");
+
+			for (int i = 0; i < numberOfIntersections; i++) {
+				currentLine = fileReader.readLine().trim().replaceAll("\\s{2,}", " ").split(" ");
 				nodeList[Integer.parseInt(currentLine[0])].addDestination(nodeList[Integer.parseInt(currentLine[1])],
 						Double.parseDouble(currentLine[2]));
 			}
+
 			Graph graph = new Graph();
-			for (int i = 0; i < nodeList.length; i++) {
+			for (int i = 0; i < nodeList.length; i++)
 				graph.addNode(nodeList[i]);
-			}
+
+			searchGraph = graph;
+
 			fileReader.close();
-
-
-		} 
-		catch (Exception e) {
+			longestTime = Math.max(Math.max(sA,sB),sC);
+			timeRequiredforCompetition();
+		} catch (Exception e) {
 			System.out.println(e);
 		}
 	}
@@ -70,19 +85,93 @@ public class CompetitionDijkstra {
 	 */
 	public int timeRequiredforCompetition() {
 
-		// TO DO
-		return -1;
+		Node longestCentralPoint = null;
+		double currentRouteLength;
+		double longestDistance = 0;
+		for (Node currentNode : nodeList) {
+			searchGraph = calculateShortestPathFromSource(searchGraph, currentNode);
+			Collections.sort(searchGraph.nodes);
+			currentRouteLength = searchGraph.nodes.get(searchGraph.nodes.size() - 1).getDistance();
+			System.out.println("currentRouteLength " + currentRouteLength);
+			if (longestDistance < currentRouteLength) {
+				longestDistance = currentRouteLength;
+				longestCentralPoint = currentNode;
+			}
+			currentNode.setDistance(Integer.MAX_VALUE);
+			currentNode.getShortestPath().clear();
+
+		}
+
+		System.out.println("Best Central Node " + longestCentralPoint.index + " With Distance " + longestDistance);
+
+		return - 1;
+
+	}
+
+	public static Graph calculateShortestPathFromSource(Graph graph, Node source) {
+		source.setDistance(0);
+
+		Set<Node> settledNodes = new HashSet<>();
+		Set<Node> unsettledNodes = new HashSet<>();
+
+		unsettledNodes.add(source);
+
+		while (unsettledNodes.size() != 0) {
+			Node currentNode = getLowestDistanceNode(unsettledNodes);
+			unsettledNodes.remove(currentNode);
+			for (Entry<Node, Double> adjacencyPair : currentNode.getAdgacentNodes().entrySet()) {
+				Node adjacentNode = adjacencyPair.getKey();
+				double edgeWeight = adjacencyPair.getValue();
+				if (!settledNodes.contains(adjacentNode)) {
+					calculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
+					unsettledNodes.add(adjacentNode);
+				}
+			}
+			settledNodes.add(currentNode);
+		}
+		return graph;
+	}
+
+	private static Node getLowestDistanceNode(Set<Node> unsettledNodes) {
+		Node lowestDistanceNode = null;
+		double lowestDistance = Integer.MAX_VALUE;
+		for (Node currentNode : unsettledNodes) {
+			double nodeDistance = currentNode.getDistance();
+			if (nodeDistance < lowestDistance) {
+				lowestDistance = nodeDistance;
+				lowestDistanceNode = currentNode;
+			}
+		}
+		return lowestDistanceNode;
+	}
+
+	private static void calculateMinimumDistance(Node currentNode, double edgeWeight, Node sourceNode) {
+		double sourceDistance = sourceNode.getDistance();
+		if (sourceDistance + edgeWeight < currentNode.getDistance()) {
+			currentNode.setDistance(sourceDistance + edgeWeight);
+			LinkedList<Node> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
+			shortestPath.add(sourceNode);
+			currentNode.setShortestPath(shortestPath);
+		}
 	}
 
 	public class Graph {
-		private Set<Node> nodes = new HashSet<>();
+		private ArrayList<Node> nodes;
+
+		public Graph() {
+			nodes = new ArrayList<>();
+		}
+
+		public Graph(Graph copy) {
+			this.nodes = copy.nodes;
+		}
 
 		public void addNode(Node newNode) {
 			nodes.add(newNode);
 		}
 	}
 
-	public class Node {
+	public class Node implements Comparable<Node> {
 		private int index;
 
 		private LinkedList<Node> shortestPath = new LinkedList<>();
@@ -97,6 +186,46 @@ public class CompetitionDijkstra {
 
 		public Node(int index) {
 			this.index = index;
+		}
+
+		public Node(Node copy) {
+			this.index = copy.getIndex();
+			this.shortestPath = copy.getShortestPath();
+			this.adgacentNodes = copy.getAdgacentNodes();
+			this.distance = copy.getDistance();
+		}
+
+		public int getIndex() {
+			return this.index;
+		}
+
+		public void setDistance(double distance) {
+			this.distance = distance;
+		}
+
+		public double getDistance() {
+			return this.distance;
+		}
+
+		public LinkedList<Node> getShortestPath() {
+			return this.shortestPath;
+		}
+
+		public void setShortestPath(LinkedList<Node> shortestPath) {
+			this.shortestPath = shortestPath;
+		}
+
+		public HashMap<Node, Double> getAdgacentNodes() {
+			return this.adgacentNodes;
+		}
+
+		@Override
+		public int compareTo(Node o) {
+			if (this.distance > o.distance)
+				return 1;
+			else if (this.distance < o.distance)
+				return -1;
+			return 0;
 		}
 
 	}
