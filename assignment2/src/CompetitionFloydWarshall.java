@@ -1,4 +1,4 @@
-package assignment2;
+
 
 /*
  * A Contest to Meet (ACM) is a reality TV contest that sets three contestants at three random

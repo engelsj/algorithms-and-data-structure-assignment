@@ -1,4 +1,3 @@
-package assignment2;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,7 +30,7 @@ import java.util.Map.Entry;
 public class CompetitionDijkstra {
 	Graph searchGraph;
 	Node[] nodeList;
-	int longestTime;
+	double slowestSpeed;
 
 	/**
 	 * @param filename:
@@ -40,72 +39,84 @@ public class CompetitionDijkstra {
 	 *            sB, sC: speeds for 3 contestants
 	 */
 	CompetitionDijkstra(String filename, int sA, int sB, int sC) {
-		File file = new File(
-				"/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment2/src/"
-						+ filename);
-		try {
-			// making file reader
-			BufferedReader fileReader = new BufferedReader(new FileReader(file));
 
-			// get the number of nodes and number of intersections from file
-			int numberOfNodes = Integer.parseInt(fileReader.readLine());
-			int numberOfIntersections = Integer.parseInt(fileReader.readLine());
+		//"/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment2/src/"
+		
+		try 
+		{
+			if (filename != null && withInBounds(sA, sB, sC)) 
+			{
+				
+				File file = new File("/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment2/src/" + filename);
+				// making file reader
+				BufferedReader fileReader = new BufferedReader(new FileReader(file));
 
-			// string to read currentLine
-			String[] currentLine;
+				// get the number of nodes and number of intersections from file
+				int numberOfNodes = Integer.parseInt(fileReader.readLine());
+				int numberOfIntersections = Integer.parseInt(fileReader.readLine());
 
-			// nodeList of to look at and load them
-			nodeList = new Node[numberOfNodes];
-			for (int i = 0; i < nodeList.length; i++)
-				nodeList[i] = new Node(i);
+				// string to read currentLine
+				String[] currentLine;
 
-			for (int i = 0; i < numberOfIntersections; i++) {
-				currentLine = fileReader.readLine().trim().replaceAll("\\s{2,}", " ").split(" ");
-				nodeList[Integer.parseInt(currentLine[0])].addDestination(nodeList[Integer.parseInt(currentLine[1])],
-						Double.parseDouble(currentLine[2]));
+				// nodeList of to look at and load them
+				nodeList = new Node[numberOfNodes];
+				for (int i = 0; i < nodeList.length; i++)
+					nodeList[i] = new Node(i);
+
+				for (int i = 0; i < numberOfIntersections; i++) {
+					currentLine = fileReader.readLine().trim().replaceAll("\\s{2,}", " ").split(" ");
+					nodeList[Integer.parseInt(currentLine[0])].addDestination(nodeList[Integer.parseInt(currentLine[1])], Double.parseDouble(currentLine[2]));
+				}
+
+				searchGraph = new Graph();
+				for (int i = 0; i < nodeList.length; i++)
+					searchGraph.addNode(nodeList[i]);
+				
+				fileReader.close();
+				slowestSpeed = ((double) Math.min(Math.min(sA, sB), sC)) / 1000;
 			}
-
-			Graph graph = new Graph();
-			for (int i = 0; i < nodeList.length; i++)
-				graph.addNode(nodeList[i]);
-
-			searchGraph = graph;
-
-			fileReader.close();
-			longestTime = Math.max(Math.max(sA,sB),sC);
-			timeRequiredforCompetition();
-		} catch (Exception e) {
+			else
+				slowestSpeed = -1;
+		} 
+		catch (Exception e) 
+		{
 			System.out.println(e);
 		}
+
+	}
+	
+	public boolean withInBounds(int sA, int sB, int sC)
+	{
+		if(sA >= 50 && sA <= 100)
+			if(sB >= 50 && sB <= 100)
+				if(sC >= 50 && sC <= 100)
+					return true;
+		return false;
 	}
 
 	/**
 	 * @return int: minimum minutes that will pass before the three contestants
 	 *         can meet
 	 */
-	public int timeRequiredforCompetition() {
-
-		Node longestCentralPoint = null;
-		double currentRouteLength;
-		double longestDistance = 0;
-		for (Node currentNode : nodeList) {
-			searchGraph = calculateShortestPathFromSource(searchGraph, currentNode);
-			Collections.sort(searchGraph.nodes);
-			currentRouteLength = searchGraph.nodes.get(searchGraph.nodes.size() - 1).getDistance();
-			System.out.println("currentRouteLength " + currentRouteLength);
-			if (longestDistance < currentRouteLength) {
-				longestDistance = currentRouteLength;
-				longestCentralPoint = currentNode;
-			}
-			currentNode.setDistance(Integer.MAX_VALUE);
-			currentNode.getShortestPath().clear();
-
-		}
-
-		System.out.println("Best Central Node " + longestCentralPoint.index + " With Distance " + longestDistance);
-
-		return - 1;
-
+	public int timeRequiredforCompetition() 
+	{
+		if(slowestSpeed == -1)
+			return -1;
+	
+        double longestDistance = 0;
+		
+		for(int i = 0; i < nodeList.length; i++)
+        {
+            searchGraph = calculateShortestPathFromSource(searchGraph, nodeList[i]);
+            for(Node currentNode : searchGraph.nodes)
+            {
+                if(longestDistance < currentNode.distance)
+                	longestDistance = currentNode.distance;
+                currentNode.setDistance(Integer.MAX_VALUE);
+                currentNode.getShortestPath().clear();
+            }
+        }
+		return (int) (longestDistance / slowestSpeed);
 	}
 
 	public static Graph calculateShortestPathFromSource(Graph graph, Node source) {
@@ -116,10 +127,12 @@ public class CompetitionDijkstra {
 
 		unsettledNodes.add(source);
 
-		while (unsettledNodes.size() != 0) {
+		while (unsettledNodes.size() != 0) 
+		{
 			Node currentNode = getLowestDistanceNode(unsettledNodes);
 			unsettledNodes.remove(currentNode);
-			for (Entry<Node, Double> adjacencyPair : currentNode.getAdgacentNodes().entrySet()) {
+			for (Entry<Node, Double> adjacencyPair : currentNode.getAdgacentNodes().entrySet()) 
+			{
 				Node adjacentNode = adjacencyPair.getKey();
 				double edgeWeight = adjacencyPair.getValue();
 				if (!settledNodes.contains(adjacentNode)) {
@@ -162,10 +175,6 @@ public class CompetitionDijkstra {
 			nodes = new ArrayList<>();
 		}
 
-		public Graph(Graph copy) {
-			this.nodes = copy.nodes;
-		}
-
 		public void addNode(Node newNode) {
 			nodes.add(newNode);
 		}
@@ -186,17 +195,6 @@ public class CompetitionDijkstra {
 
 		public Node(int index) {
 			this.index = index;
-		}
-
-		public Node(Node copy) {
-			this.index = copy.getIndex();
-			this.shortestPath = copy.getShortestPath();
-			this.adgacentNodes = copy.getAdgacentNodes();
-			this.distance = copy.getDistance();
-		}
-
-		public int getIndex() {
-			return this.index;
 		}
 
 		public void setDistance(double distance) {
