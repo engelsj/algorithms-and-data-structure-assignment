@@ -27,6 +27,8 @@ import java.util.Map.Entry;
  * This class implements the competition using Dijkstra's algorithm
  */
 
+// Reference for my implementation of this algorithm was taken from 
+// https://www.baeldung.com/java-dijkstra
 public class CompetitionDijkstra {
 	Graph searchGraph;
 	Node[] nodeList;
@@ -47,13 +49,13 @@ public class CompetitionDijkstra {
 			if (filename != null && withInBounds(sA, sB, sC)) 
 			{
 				
-				File file = new File("/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment2/src/" + filename);
+				File file = new File("/Users/jackengels1/Documents/GitHub/algorithms-and-data-structure-assignment/assignment2/src/"+ filename);
 				// making file reader
 				BufferedReader fileReader = new BufferedReader(new FileReader(file));
 
 				// get the number of nodes and number of intersections from file
 				int numberOfNodes = Integer.parseInt(fileReader.readLine());
-				int numberOfIntersections = Integer.parseInt(fileReader.readLine());
+				int numberOfEdges = Integer.parseInt(fileReader.readLine());
 
 				// string to read currentLine
 				String[] currentLine;
@@ -63,7 +65,7 @@ public class CompetitionDijkstra {
 				for (int i = 0; i < nodeList.length; i++)
 					nodeList[i] = new Node(i);
 
-				for (int i = 0; i < numberOfIntersections; i++) {
+				for (int i = 0; i < numberOfEdges; i++) {
 					currentLine = fileReader.readLine().trim().replaceAll("\\s{2,}", " ").split(" ");
 					nodeList[Integer.parseInt(currentLine[0])].addDestination(nodeList[Integer.parseInt(currentLine[1])], Double.parseDouble(currentLine[2]));
 				}
@@ -104,19 +106,22 @@ public class CompetitionDijkstra {
 			return -1;
 	
         double longestDistance = 0;
-		
+
 		for(int i = 0; i < nodeList.length; i++)
         {
             searchGraph = calculateShortestPathFromSource(searchGraph, nodeList[i]);
             for(Node currentNode : searchGraph.nodes)
             {
-                if(longestDistance < currentNode.distance)
+            	if(currentNode.distance == Double.MAX_VALUE)
+            		return -1;
+            	else if(longestDistance < currentNode.distance)
                 	longestDistance = currentNode.distance;
-                currentNode.setDistance(Integer.MAX_VALUE);
-                currentNode.getShortestPath().clear();
+                currentNode.setDistance(Double.MAX_VALUE);
             }
         }
-		return (int) (longestDistance / slowestSpeed);
+		if(longestDistance == 0)
+			return -1;
+		return (int) Math.ceil((longestDistance / slowestSpeed));
 	}
 
 	public static Graph calculateShortestPathFromSource(Graph graph, Node source) {
@@ -162,28 +167,19 @@ public class CompetitionDijkstra {
 		double sourceDistance = sourceNode.getDistance();
 		if (sourceDistance + edgeWeight < currentNode.getDistance()) {
 			currentNode.setDistance(sourceDistance + edgeWeight);
-			LinkedList<Node> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
-			shortestPath.add(sourceNode);
-			currentNode.setShortestPath(shortestPath);
 		}
 	}
 
 	public class Graph {
-		private ArrayList<Node> nodes;
-
-		public Graph() {
-			nodes = new ArrayList<>();
-		}
-
+		private Set<Node> nodes = new HashSet<>();
 		public void addNode(Node newNode) {
 			nodes.add(newNode);
 		}
 	}
 
-	public class Node implements Comparable<Node> {
+	public class Node{
 		private int index;
 
-		private LinkedList<Node> shortestPath = new LinkedList<>();
 
 		private HashMap<Node, Double> adgacentNodes = new HashMap<>();
 
@@ -205,25 +201,9 @@ public class CompetitionDijkstra {
 			return this.distance;
 		}
 
-		public LinkedList<Node> getShortestPath() {
-			return this.shortestPath;
-		}
-
-		public void setShortestPath(LinkedList<Node> shortestPath) {
-			this.shortestPath = shortestPath;
-		}
 
 		public HashMap<Node, Double> getAdgacentNodes() {
 			return this.adgacentNodes;
-		}
-
-		@Override
-		public int compareTo(Node o) {
-			if (this.distance > o.distance)
-				return 1;
-			else if (this.distance < o.distance)
-				return -1;
-			return 0;
 		}
 
 	}
